@@ -1,11 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
     './src/index'
   ],
   output: {
@@ -15,6 +14,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin("styles.css"),
   ],
   module: {
     loaders: [
@@ -23,7 +23,7 @@ module.exports = {
         loaders: ['react-hot', 'babel'],
         include: path.join(__dirname, 'src')
       },
-      { test: /\.scss$/, loaders: ["style", "css", "sass"] },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract("style", "css", "sass") },
       { test: /\.png$/, loader: "url-loader?limit=100000" },
       { test: /\.jpg$/, loader: "file-loader" },
     ]
